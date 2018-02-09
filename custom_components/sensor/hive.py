@@ -135,12 +135,12 @@ class HiveSensorEntity(Entity):
             returnvalue = self.session.hotwater.get_boost(self.node_id)
             return str(returnvalue).capitalize()
         elif self.device_type == "Hive_Device_BatteryLevel":
-            self.batt_lvl = self.session.sensor.battery_level(self.node_id)
+            self.batt_lvl = self.session.attributes.battery_level(self.node_id)
             return self.batt_lvl
         elif self.device_type == "Hive_Device_Light_Mode":
-            return self.session.sensor.get_mode(self.node_id)
+            return self.session.attributes.get_mode(self.node_id)
         elif self.device_type == "Hive_Device_Plug_Mode":
-            return self.session.sensor.get_mode(self.node_id)
+            return self.session.attributes.get_mode(self.node_id)
         elif self.device_type == "Hub_OnlineStatus":
             return self.session.sensor.hub_online_status(self.node_id)
 
