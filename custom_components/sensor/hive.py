@@ -21,7 +21,8 @@ FRIENDLY_NAMES = {'Heating_CurrentTemperature': "Current Temperature",
                   'HotWater_State': "Hot Water State",
                   'HotWater_Mode': "Hot Water Mode",
                   'HotWater_Boost': "Hot Water Boost",
-                  'Hub_OnlineStatus': 'Status'}
+                  'Hub_OnlineStatus': 'Status',
+                  'Hive_OutsideTemperature': 'Outside Temperature'}
 DEVICETYPE_ICONS = {'Heating_CurrentTemperature': 'mdi:thermometer',
                     'Heating_TargetTemperature': 'mdi:thermometer',
                     'Heating_State': 'mdi:radiator',
@@ -32,7 +33,8 @@ DEVICETYPE_ICONS = {'Heating_CurrentTemperature': 'mdi:thermometer',
                     'HotWater_Boost': 'mdi:water-pump',
                     'Hive_Device_Light_Mode': 'mdi:eye',
                     'Hive_Device_Plug_Mode': 'mdi:eye',
-                    'Hub_OnlineStatus': 'mdi:switch'}
+                    'Hub_OnlineStatus': 'mdi:switch',
+                    'Hive_OutsideTemperature': 'mdi:thermometer'}
 
 
 def setup_platform(hass, config, add_devices, discovery_info=None):
@@ -82,8 +84,11 @@ class HiveSensorEntity(Entity):
         else:
             friendly_name = FRIENDLY_NAMES.get(self.device_type)
 
-        if self.node_name is not None:
-            friendly_name = self.node_name + " " + friendly_name
+        if self.device_type == "Hive_OutsideTemperature":
+            return friendly_name
+        else:
+            if self.node_name is not None:
+                friendly_name = self.node_name + " " + friendly_name
 
         return friendly_name
 
@@ -143,6 +148,8 @@ class HiveSensorEntity(Entity):
             return self.session.attributes.get_mode(self.node_id)
         elif self.device_type == "Hub_OnlineStatus":
             return self.session.sensor.hub_online_status(self.node_id)
+        elif self.device_type == "Hive_OutsideTemperature":
+            return self.session.weather.temperature()
 
     @property
     def state_attributes(self):
@@ -336,6 +343,8 @@ class HiveSensorEntity(Entity):
         if self.device_type == "Heating_CurrentTemperature":
             return TEMP_CELSIUS
         elif self.device_type == "Heating_TargetTemperature":
+            return TEMP_CELSIUS
+        elif self.device_type == "Hive_OutsideTemperature":
             return TEMP_CELSIUS
         elif self.device_type == "Hive_Device_BatteryLevel":
             return "%"
