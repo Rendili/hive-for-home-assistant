@@ -56,6 +56,7 @@ class HiveSensorEntity(Entity):
         self.device_type = hivedevice["HA_DeviceType"]
         self.node_device_type = hivedevice["Hive_DeviceType"]
         self.session = hivesession
+        self.attributes = {}
         if self.device_type == "Hive_Device_BatteryLevel":
             self.batt_lvl = None
         self.data_updatesource = '{}.{}'.format(self.device_type,
@@ -91,6 +92,11 @@ class HiveSensorEntity(Entity):
                 friendly_name = self.node_name + " " + friendly_name
 
         return friendly_name
+
+    @property
+    def device_state_attributes(self):
+        """Show Device Attributes"""
+        return self.attributes
 
     @property
     def force_update(self):
@@ -364,3 +370,5 @@ class HiveSensorEntity(Entity):
         if self.session.core.update_data(self.node_id):
             for entity in self.session.entities:
                 entity.handle_update(self.data_updatesource)
+        self.attributes = self.session.attributes.state_attributes(
+            self.node_id)
