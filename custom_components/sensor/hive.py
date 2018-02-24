@@ -78,9 +78,18 @@ class HiveSensorEntity(Entity):
                 friendly_name = "Thermostat Battery Level"
             else:
                 friendly_name = "Battery Level"
+        elif self.device_type == "Hive_Device_Availability":
+            if self.node_device_type == "thermostatui":
+                friendly_name = "Thermostat Availability"
+            else:
+                friendly_name = "Availability"
         elif self.device_type == "Hive_Device_Light_Mode":
             return self.node_name
         elif self.device_type == "Hive_Device_Plug_Mode":
+            return self.node_name
+        elif self.device_type == "Hive_Device_Light_Availability":
+            return self.node_name
+        elif self.device_type == "Hive_Device_Plug_Availability":
             return self.node_name
         else:
             friendly_name = FRIENDLY_NAMES.get(self.device_type)
@@ -94,20 +103,21 @@ class HiveSensorEntity(Entity):
         return friendly_name
 
     @property
-    def device_state_attributes(self):
-        """Show Device Attributes"""
-        return self.attributes
-
-    @property
     def force_update(self):
         """Return True if state updates should be forced."""
         if self.device_type == "Heating_TargetTemperature":
             return True
         elif self.device_type == "Hive_Device_BatteryLevel":
             return True
+        elif self.device_type == "Hive_Device_Availability":
+            return True
         elif self.device_type == "Hive_Device_Light_Mode":
             return True
         elif self.device_type == "Hive_Device_Plug_Mode":
+            return True
+        elif self.device_type == "Hive_Device_Light_Availability":
+            return True
+        elif self.device_type == "Hive_Device_Plug_Availability":
             return True
 
     @property
@@ -148,10 +158,16 @@ class HiveSensorEntity(Entity):
         elif self.device_type == "Hive_Device_BatteryLevel":
             self.batt_lvl = self.session.attributes.battery_level(self.node_id)
             return self.batt_lvl
+        elif self.device_type == "Hive_Device_Availability":
+            return self.session.attributes.online_offline(self.node_id)
         elif self.device_type == "Hive_Device_Light_Mode":
             return self.session.attributes.get_mode(self.node_id)
         elif self.device_type == "Hive_Device_Plug_Mode":
             return self.session.attributes.get_mode(self.node_id)
+        elif self.device_type == "Hive_Device_Light_Availability":
+            return self.session.attributes.online_offline(self.node_id)
+        elif self.device_type == "Hive_Device_Plug_Availability":
+            return self.session.attributes.online_offline(self.node_id)
         elif self.device_type == "Hub_OnlineStatus":
             return self.session.sensor.hub_online_status(self.node_id)
         elif self.device_type == "Hive_OutsideTemperature":
@@ -370,5 +386,3 @@ class HiveSensorEntity(Entity):
         if self.session.core.update_data(self.node_id):
             for entity in self.session.entities:
                 entity.handle_update(self.data_updatesource)
-        self.attributes = self.session.attributes.state_attributes(
-            self.node_id)
