@@ -84,13 +84,13 @@ class HiveSensorEntity(Entity):
             else:
                 friendly_name = "Availability"
         elif self.device_type == "Hive_Device_Light_Mode":
-            return self.node_name
+            return self.node_name + " Mode"
         elif self.device_type == "Hive_Device_Plug_Mode":
-            return self.node_name
+            return self.node_name + " Mode"
         elif self.device_type == "Hive_Device_Light_Availability":
-            return self.node_name
+            return self.node_name + " Availability"
         elif self.device_type == "Hive_Device_Plug_Availability":
-            return self.node_name
+            return self.node_name + " Availability"
         else:
             friendly_name = FRIENDLY_NAMES.get(self.device_type)
 
