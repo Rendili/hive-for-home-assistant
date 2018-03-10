@@ -80,17 +80,17 @@ class HiveSensorEntity(Entity):
                 friendly_name = "Battery Level"
         elif self.device_type == "Hive_Device_Availability":
             if self.node_device_type == "thermostatui":
-                friendly_name = "Thermostat Availability"
+                friendly_name = "Thermostat Status"
             else:
-                friendly_name = "Availability"
+                friendly_name = " Status"
         elif self.device_type == "Hive_Device_Light_Mode":
             return self.node_name + " Mode"
         elif self.device_type == "Hive_Device_Plug_Mode":
             return self.node_name + " Mode"
         elif self.device_type == "Hive_Device_Light_Availability":
-            return self.node_name + " Availability"
+            return self.node_name + " Status"
         elif self.device_type == "Hive_Device_Plug_Availability":
-            return self.node_name + " Availability"
+            return self.node_name + " Status"
         else:
             friendly_name = FRIENDLY_NAMES.get(self.device_type)
 
