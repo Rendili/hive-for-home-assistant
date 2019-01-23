@@ -4,9 +4,10 @@ Support for the Hive devices.
 For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/sensor.hive/
 """
+
 from homeassistant.components.climate import (STATE_AUTO, STATE_HEAT,
                                               STATE_OFF, STATE_ON)
-from homeassistant.components.hive import DATA_HIVE
+from homeassistant.components.hive import DATA_HIVE, DOMAIN
 from homeassistant.const import TEMP_CELSIUS
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.icon import icon_for_battery_level
@@ -21,7 +22,7 @@ FRIENDLY_NAMES = {'Heating_CurrentTemperature': "Current Temperature",
                   'HotWater_State': "Hot Water State",
                   'HotWater_Mode': "Hot Water Mode",
                   'HotWater_Boost': "Hot Water Boost",
-                  'Hub_OnlineStatus': 'Status',
+                  'Hub_OnlineStatus': 'Hive Hub Status',
                   'Hive_OutsideTemperature': 'Outside Temperature'}
 DEVICETYPE_ICONS = {'Heating_CurrentTemperature': 'mdi:thermometer',
                     'Heating_TargetTemperature': 'mdi:thermometer',
@@ -61,7 +62,24 @@ class HiveSensorEntity(Entity):
             self.batt_lvl = None
         self.data_updatesource = '{}.{}'.format(self.device_type,
                                                 self.node_id)
+        self._unique_id = '{}-{}'.format(self.node_id,
+                                                self.device_type)
         self.session.entities.append(self)
+
+    @property
+    def unique_id(self):
+        """Return unique ID of entity."""
+        return self._unique_id
+
+    @property
+    def device_info(self):
+        """Return device information."""
+        return {
+            'identifiers': {
+                (DOMAIN, self.unique_id)
+            },
+            'name': self.name
+        }
 
     def handle_update(self, updatesource):
         """Handle the new update request."""
@@ -95,6 +113,8 @@ class HiveSensorEntity(Entity):
             friendly_name = FRIENDLY_NAMES.get(self.device_type)
 
         if self.device_type == "Hive_OutsideTemperature":
+            return friendly_name
+        elif  self.device_type == "Hub_OnlineStatus":
             return friendly_name
         else:
             if self.node_name is not None:
