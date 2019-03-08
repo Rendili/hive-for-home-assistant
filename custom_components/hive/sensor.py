@@ -5,10 +5,9 @@ For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/sensor.hive/
 """
 
-from homeassistant.components.climate import (STATE_AUTO, STATE_HEAT,
-                                              STATE_OFF, STATE_ON)
+from homeassistant.components.climate.const import (STATE_AUTO, STATE_HEAT)
 from homeassistant.components.hive import DATA_HIVE, DOMAIN
-from homeassistant.const import TEMP_CELSIUS
+from homeassistant.const import (STATE_OFF, STATE_ON, TEMP_CELSIUS)
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.icon import icon_for_battery_level
 
