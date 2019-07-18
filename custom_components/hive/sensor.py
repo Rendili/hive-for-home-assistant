@@ -5,7 +5,7 @@ For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/sensor.hive/
 """
 
-from homeassistant.components.climate.const import (STATE_AUTO, STATE_HEAT)
+from homeassistant.components.climate.const import (HVAC_MODE_AUTO, HVAC_MODE_HEAT, HVAC_MODE_OFF, PRESET_BOOST)
 from homeassistant.components.hive import DATA_HIVE, DOMAIN
 from homeassistant.const import (STATE_OFF, STATE_ON, TEMP_CELSIUS)
 from homeassistant.helpers.entity import Entity
@@ -152,11 +152,11 @@ class HiveSensorEntity(Entity):
         elif self.device_type == "Heating_Mode":
             currentmode = self.session.heating.get_mode(self.node_id)
             if currentmode == "SCHEDULE":
-                return str(STATE_AUTO).capitalize()
+                return str(HVAC_MODE_AUTO).capitalize()
             elif currentmode == "MANUAL":
-                return str(STATE_HEAT).capitalize()
+                return str(HVAC_MODE_HEAT).capitalize()
             elif currentmode == "OFF":
-                return str(STATE_OFF).capitalize()
+                return str(HVAC_MODE_OFF).capitalize()
         elif self.device_type == "Heating_Boost":
             returnvalue = self.session.heating.get_boost(self.node_id)
             return str(returnvalue).capitalize()
@@ -166,7 +166,7 @@ class HiveSensorEntity(Entity):
         elif self.device_type == "HotWater_Mode":
             currentmode = self.session.hotwater.get_mode(self.node_id)
             if currentmode == "SCHEDULE":
-                return str(STATE_AUTO).capitalize()
+                return str(HVAC_MODE_AUTO).capitalize()
             elif currentmode == "ON":
                 return str(STATE_ON).capitalize()
             elif currentmode == "OFF":
