@@ -4,14 +4,12 @@ This is a custom component to allow control of Hive devices in [Homeassistant](h
 
 ## Hive Custom Component Supports
 
-- Products
   - Hive Heating
   - Hive Hot Water
   - Hive Lights
   - Hive Plugs
   - Hive Sensors
   - Hive Hub
-- Extra Information
   - Hive Attributes
 
 ## Useful links
