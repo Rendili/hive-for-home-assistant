@@ -1,4 +1,4 @@
-[Hive Custom Component](https://github.com/Rendili/hive-for-home-assistant) for homeassistant
+[Hive Custom Component](https://github.com/Rendili/hive-for-home-assistant) for Home Assistant
 
 This is a custom component to allow control of Hive devices in [Homeassistant](https://home-assistant.io)using the Hive website API.
 
@@ -6,7 +6,7 @@ This is a custom component to allow control of Hive devices in [Homeassistant](h
 
 - Products
   - Hive Heating
-  - Hive Hotwater
+  - Hive Hot Water
   - Hive Lights
   - Hive Plugs
   - Hive Sensors
