@@ -6,6 +6,7 @@
     "pyhiveapi==0.2.18.1"
   ],
   "dependencies": [],
+  "homeassistant": "0.96.0",
   "codeowners": [
     "@Rendili",
     "@KJonline"
