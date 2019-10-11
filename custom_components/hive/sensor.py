@@ -5,7 +5,8 @@ For more details about this platform, please refer to the documentation at
 https://home-assistant.io/components/sensor.hive/
 """
 
-from homeassistant.components.climate.const import (HVAC_MODE_AUTO, HVAC_MODE_HEAT, HVAC_MODE_OFF, PRESET_BOOST)
+from homeassistant.components.climate.const import (
+    HVAC_MODE_AUTO, HVAC_MODE_HEAT, HVAC_MODE_OFF, PRESET_BOOST)
 from homeassistant.components.hive import DATA_HIVE, DOMAIN
 from homeassistant.const import (STATE_OFF, STATE_ON, TEMP_CELSIUS)
 from homeassistant.helpers.entity import Entity
@@ -41,29 +42,23 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     """Set up Hive sensor devices."""
     if discovery_info is None:
         return
-    session = hass.data.get(DATA_HIVE)
 
-    add_devices([HiveSensorEntity(session, discovery_info)])
+    session = hass.data.get(DATA_HIVE)
+    devs = []
+    for dev in discovery_info:
+        if dev["HA_DeviceType"] in FRIENDLY_NAMES:
+            devs.append(HiveSensorEntity(session, dev))
+    add_entities(devs)
 
 
 class HiveSensorEntity(Entity):
     """Hive Sensor Entity."""
 
-    def __init__(self, hivesession, hivedevice):
+    def __init__(self, hive_session, hive_device):
         """Initialize the sensor."""
-        self.node_id = hivedevice["Hive_NodeID"]
-        self.node_name = hivedevice["Hive_NodeName"]
-        self.device_type = hivedevice["HA_DeviceType"]
-        self.node_device_type = hivedevice["Hive_DeviceType"]
-        self.session = hivesession
-        self.attributes = {}
+        super().__init__(hive_session, hive_device)
         if self.device_type == "Hive_Device_BatteryLevel":
             self.batt_lvl = None
-        self.data_updatesource = '{}.{}'.format(self.device_type,
-                                                self.node_id)
-        self._unique_id = '{}-{}'.format(self.node_id,
-                                                self.device_type)
-        self.session.entities.append(self)
 
     @property
     def unique_id(self):
@@ -79,11 +74,6 @@ class HiveSensorEntity(Entity):
             },
             'name': self.name
         }
-
-    def handle_update(self, updatesource):
-        """Handle the new update request."""
-        if '{}.{}'.format(self.device_type, self.node_id) not in updatesource:
-            self.schedule_update_ha_state()
 
     @property
     def name(self):
@@ -113,7 +103,7 @@ class HiveSensorEntity(Entity):
 
         if self.device_type == "Hive_OutsideTemperature":
             return friendly_name
-        elif  self.device_type == "Hub_OnlineStatus":
+        elif self.device_type == "Hub_OnlineStatus":
             return friendly_name
         else:
             if self.node_name is not None:
@@ -402,6 +392,4 @@ class HiveSensorEntity(Entity):
 
     def update(self):
         """Update all Node data frome Hive."""
-        if self.session.core.update_data(self.node_id):
-            for entity in self.session.entities:
-                entity.handle_update(self.data_updatesource)
+        self.session.core.update_data(self.node_id)
