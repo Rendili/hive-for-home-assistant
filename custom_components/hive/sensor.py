@@ -38,7 +38,7 @@ DEVICETYPE_ICONS = {'Heating_CurrentTemperature': 'mdi:thermometer',
                     'Hive_OutsideTemperature': 'mdi:thermometer'}
 
 
-def setup_platform(hass, config, add_devices, discovery_info=None):
+def setup_platform(hass, config, add_entities, discovery_info=None):
     """Set up Hive sensor devices."""
     if discovery_info is None:
         return
@@ -46,8 +46,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     session = hass.data.get(DATA_HIVE)
     devs = []
     for dev in discovery_info:
-        if dev["HA_DeviceType"] in FRIENDLY_NAMES:
-            devs.append(HiveSensorEntity(session, dev))
+        devs.append(HiveSensorEntity(session, dev))
     add_entities(devs)
 
 
