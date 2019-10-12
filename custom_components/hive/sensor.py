@@ -7,7 +7,7 @@ https://home-assistant.io/components/sensor.hive/
 
 from homeassistant.components.climate.const import (
     HVAC_MODE_AUTO, HVAC_MODE_HEAT, HVAC_MODE_OFF, PRESET_BOOST)
-from homeassistant.components.hive import DATA_HIVE, DOMAIN
+from homeassistant.components.hive import DATA_HIVE, DOMAIN, HiveEntity
 from homeassistant.const import (STATE_OFF, STATE_ON, TEMP_CELSIUS)
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.icon import icon_for_battery_level
@@ -51,7 +51,7 @@ def setup_platform(hass, config, add_devices, discovery_info=None):
     add_entities(devs)
 
 
-class HiveSensorEntity(Entity):
+class HiveSensorEntity(HiveEntity, Entity):
     """Hive Sensor Entity."""
 
     def __init__(self, hive_session, hive_device):
