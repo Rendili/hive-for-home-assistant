@@ -1,7 +1,7 @@
 {
-  "domain": "hive",
+  "domain": "hive_custom",
   "name": "Hive",
-  "documentation": "https://www.home-assistant.io/components/hive",
+  "documentation": "https://github.com/Rendili/hive-for-home-assistant/",
   "requirements": [
     "pyhiveapi==0.2.19.3"
   ],
