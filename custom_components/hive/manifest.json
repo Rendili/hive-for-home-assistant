@@ -1,14 +1,9 @@
 {
-  "domain": "hive_custom",
+  "domain": "hive",
   "name": "Hive",
   "documentation": "https://github.com/Rendili/hive-for-home-assistant/",
-  "requirements": [
-    "pyhiveapi==0.2.19.3"
-  ],
+  "requirements": ["pyhiveapi==0.2.19.3"],
   "dependencies": [],
   "homeassistant": "0.96.0",
-  "codeowners": [
-    "@Rendili",
-    "@KJonline"
-  ]
+  "codeowners": ["@Rendili", "@KJonline"]
 }
